@@ -47,7 +47,7 @@
                     // 3. Seite mit Tenant-Daten füllen
                     document.getElementById('b-icon').textContent = config.icon;
                     document.getElementById('b-title').textContent = config.title;
-                    document.getElementById('b-message').textContent = config.message;
+                    document.getElementById('b-message').innerHTML = config.message;
                     document.title = config.name; // Browser-Tab-Titel
                 })
                 .catch(err => {
@@ -78,4 +78,5 @@
         }
     </script>
 </body>
+
 </html>
