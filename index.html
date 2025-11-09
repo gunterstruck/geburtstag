@@ -42,7 +42,7 @@
                     }
                     return response.json();
                 })
-                .then(response => response.json())
+                //.then(response => response.json())
                 .then(config => {
                     // 3. Seite mit Tenant-Daten füllen
                     document.getElementById('b-icon').textContent = config.icon;
@@ -78,4 +78,5 @@
         }
     </script>
 </body>
+
 </html>
