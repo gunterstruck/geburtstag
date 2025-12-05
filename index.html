@@ -8,15 +8,20 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="theme-color" content="#2a3b4c">
     <style>
-        /* Das CSS von vorhin bleibt exakt gleich */
+        /* Weihnachtliche Animationen mit Lametta, Sternen und Schneeflocken */
         @keyframes confetti-fall { 0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes snow-fall { 0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0.3; } }
+        @keyframes star-twinkle { 0%, 100% { transform: translateY(-100%) rotate(0deg) scale(1); opacity: 1; } 50% { transform: translateY(50vh) rotate(180deg) scale(1.5); opacity: 0.8; } 100% { transform: translateY(100vh) rotate(360deg) scale(1); opacity: 0; } }
         @keyframes icon-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #2a3b4c; color: #ffffff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; text-align: center; }
         .container { animation: icon-bounce 2s infinite ease-in-out; }
         h1 { font-size: 2.5rem; color: #f0c04a; text-shadow: 0 0 10px #f0c04a; }
         p { font-size: 1.5rem; }
         .icon { font-size: 5rem; display: block; margin-bottom: 1rem; }
-        .confetti { position: fixed; top: 0; left: 0; width: 10px; height: 20px; opacity: 0; animation: confetti-fall 5s linear infinite; }
+        .confetti { position: fixed; top: 0; left: 0; width: 10px; height: 20px; opacity: 0; animation: confetti-fall 8s linear infinite; }
+        .star { position: fixed; top: 0; left: 0; font-size: 1.5rem; opacity: 0; animation: star-twinkle 10s ease-in-out infinite; }
+        .snowflake { position: fixed; top: 0; left: 0; font-size: 1.2rem; opacity: 0; animation: snow-fall 12s linear infinite; color: #ffffff; }
+        .tinsel { position: fixed; top: 0; left: 0; width: 3px; height: 40px; opacity: 0; animation: confetti-fall 10s linear infinite; background: linear-gradient(180deg, #FFD700, #FFA500, #FFD700); box-shadow: 0 0 5px #FFD700; }
     </style>
 </head>
 <body>
@@ -61,20 +66,45 @@
         });
 
         function startConfetti() {
-            function createConfetti() {
-                const colors = ['#D40000', '#FFD700', '#FFFFFF', '#8B0000']; // Rot, Gold, Weiß, Dunkelrot für Nikolaus
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.animationDelay = Math.random() * 5 + 's';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                document.body.appendChild(confetti);
+            function createParticle() {
+                const types = [
+                    { class: 'confetti', duration: 8000, colors: ['#D40000', '#FFD700', '#FFFFFF', '#8B0000', '#00FF00'] },
+                    { class: 'star', duration: 10000, content: '⭐' },
+                    { class: 'star', duration: 10000, content: '✨' },
+                    { class: 'snowflake', duration: 12000, content: '❄️' },
+                    { class: 'snowflake', duration: 12000, content: '❅' },
+                    { class: 'tinsel', duration: 10000 }
+                ];
 
-                setTimeout(() => { confetti.remove(); }, 5000);
+                const type = types[Math.floor(Math.random() * types.length)];
+                const particle = document.createElement('div');
+                particle.className = type.class;
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+
+                if (type.colors) {
+                    // Für Konfetti: zufällige Farbe
+                    particle.style.backgroundColor = type.colors[Math.floor(Math.random() * type.colors.length)];
+                } else if (type.content) {
+                    // Für Sterne und Schneeflocken: Emoji/Unicode-Zeichen
+                    particle.textContent = type.content;
+                }
+
+                document.body.appendChild(particle);
+                setTimeout(() => { particle.remove(); }, type.duration);
             }
-            for (let i = 0; i < 100; i++) {
-                setTimeout(createConfetti, i * 50);
+
+            // Initiale Partikel
+            for (let i = 0; i < 150; i++) {
+                setTimeout(createParticle, i * 30);
             }
+
+            // Kontinuierlich neue Partikel erstellen (Weihnachtszauber hört nie auf!)
+            setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(createParticle, i * 100);
+                }
+            }, 1000);
         }
     </script>
 </body>
